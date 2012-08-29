@@ -131,7 +131,7 @@ public class BlobShape : MonoBehaviour {
 	}
 
 	Mesh generateShadowMesh() {
-		return generateMesh(1.0f, 0.25f, 2, 0.0f, false);
+		return generateMesh(1.1f, 0.25f, 2, 0.0f, false);
 	}
 
 	public void CreateMesh() {
