@@ -12,13 +12,13 @@ public class BubbleManager : MonoBehaviour {
 	public GameObject bubblePoisonPrefab;
 
 	public int BubbleCountSigned(float dh) {
-		bool isCreatePoison = dh < 0;
+		bool isCreateHealtyh = dh > 0;
 		int num = Mathf.RoundToInt(Mathf.Abs(dh) / Bubble.cHealthPerBubble);
-		return isCreatePoison ? -num : +num;
+		return isCreateHealtyh ? num : -num;
 	}
 
 	public void Create(Vector3 position, float radius, float dh) {
-		bool isCreatePoison = dh < 0;
+		bool isCreateHealtyh = dh > 0;
 		dh = Mathf.Abs(dh);
 		int num = Mathf.RoundToInt(dh / Bubble.cHealthPerBubble);
 		if(num == 0) {
@@ -28,23 +28,23 @@ public class BubbleManager : MonoBehaviour {
 		}
 		else {
 			while(num > 0) {
-				CreateBubble(position, radius, isCreatePoison);
+				CreateBubble(position, radius, isCreateHealtyh);
 				num --;
 			}
 		}
 	}
 
-	public void CreateBubble(Vector3 position, float radius, bool isPoison) {
+	public void CreateBubble(Vector3 position, float radius, bool isHealty) {
 		GameObject x;
-		if(isPoison)
-			x = (GameObject)Instantiate(bubblePoisonPrefab);
-		else
+		if(isHealty)
 			x = (GameObject)Instantiate(bubbleHealthPrefab);
-		Bubble bubble = x.GetComponent<Bubble>();
-		if(isPoison)
-			bubble.SetPoisonBubble();
 		else
+			x = (GameObject)Instantiate(bubblePoisonPrefab);
+		Bubble bubble = x.GetComponent<Bubble>();
+		if(isHealty)
 			bubble.SetHealthBubble();
+		else
+			bubble.SetPoisonBubble();
 		x.transform.position = position + radius * MoreMath.RandomInsideUnitCircle3;
 		bubble.velocity = 2.0f*MoreMath.RandomInsideUnitCircle3;
 		add(x);
