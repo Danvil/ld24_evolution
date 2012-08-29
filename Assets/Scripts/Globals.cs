@@ -20,8 +20,6 @@ public class Globals : MonoBehaviour {
 	
 	public static Darwin Darwin;
 
-	public static Kongregate Kongregate;
-
 	public static Camera MainCamera;
 
 	public static float startTime;

@@ -35,7 +35,6 @@ public class PlayerInteract : MonoBehaviour {
 
 	void Death() {
 		TimeSurvived = Mathf.RoundToInt(MyTime.time - Globals.startTime);
-		Globals.Kongregate.Gameover(TimeSurvived);
 	}
 	
 	Genes genes;

@@ -59,7 +59,6 @@
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\Healthbar.cs" />
      <Compile Include="Assets\Scripts\Interface.cs" />
-     <Compile Include="Assets\Scripts\Kongregate.cs" />
      <Compile Include="Assets\Scripts\MoreMath.cs" />
      <Compile Include="Assets\Scripts\MoreMesh.cs" />
      <Compile Include="Assets\Scripts\MoreTools.cs" />
