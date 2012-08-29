@@ -17,8 +17,13 @@ public class Genes
 	public float swCircle = 0.0f;
 	public float swSquare = 1.0f;
 	public float swStar = 0.0f;
+	public int swStarCount = 6;
+	public float swStarPower = 2.0f;
+	public float swStarRadiusMin = 0.33f;
 	public float swRose = 0.0f;
+	public int swRosePetals = 2;
 	public float swRose2 = 0.0f;
+	public int swRoseAbsPetals = 2;
 	public float swCardioid = 0.0f;
 
 	public float playerFollowStrength = 0.0f;
@@ -26,6 +31,8 @@ public class Genes
 	public float bubbleInterval = 100.0f;
 
 	public float playerHealthRestoreBase = 0.0f;
+
+	public float reproductionIntervalBase = 80.0f;
 	
 	public Color color = Color.blue;
 
@@ -44,6 +51,7 @@ public class Genes
 		g.playerFollowStrength = this.playerFollowStrength;
 		g.bubbleInterval = this.bubbleInterval;
 		g.playerHealthRestoreBase = this.playerHealthRestoreBase;
+		g.reproductionIntervalBase = this.reproductionIntervalBase;
 		g.color = this.color;
 		g.species = this.species;
 		return g;

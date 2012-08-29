@@ -70,17 +70,18 @@ public class BlobMove : MonoBehaviour {
 		return GetComponent<BlobGenotype>().Speed * (goal - transform.position).normalized;
 	}
 
-	float playerDist;
-	float playerInfluence;
-
 	// move towards goal and avoid/follow player
 	Vector3 computeFollow() {
-		playerDist = (Globals.Player.transform.position - transform.position).magnitude;
-		playerInfluence = 1.0f / (1.0f + 0.1f*Mathf.Max(0.0f,playerDist-1.0f));
-		if(Globals.Player.GetComponent<PlayerInteract>().IsDead) {
-			playerInfluence = 0.0f;
+		float playerInfluence = 0.0f;
+		if(Globals.Player != null && !Globals.Player.GetComponent<PlayerInteract>().IsDead) {
+			float playerDist = (Globals.Player.transform.position - transform.position).magnitude;
+			playerInfluence = 1.0f / (1.0f + 0.1f*Mathf.Max(0.0f,playerDist-1.0f));
 		}
-		return playerInfluence * computePlayerFollow() + (1.0f - playerInfluence) * computeGoalFollow();
+		Vector3 follow = (1.0f - playerInfluence) * computeGoalFollow();
+		if(playerInfluence > 0.0f) {
+			follow += playerInfluence * computePlayerFollow();
+		}
+		return follow;
 	}
 
 	float avoidFalloff(float d, float d_min) {

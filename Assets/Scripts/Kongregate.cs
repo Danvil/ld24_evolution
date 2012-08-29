@@ -39,7 +39,7 @@ public class Kongregate : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Box(new Rect(0, 0, 100, 20), isKongregate.ToString());
+//		GUI.Box(new Rect(0, 0, 100, 20), isKongregate.ToString());
 	}
 
 	// Use this for initialization

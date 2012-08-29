@@ -4,7 +4,7 @@ using System.Linq;
 
 public class BlobShape : MonoBehaviour {
 
-	const int N = 24; // LD24!
+	static public int N = 24; // LD24!
 
 	public bool isUpdateMesh = false;
 
@@ -24,22 +24,22 @@ public class BlobShape : MonoBehaviour {
 		return 1.0f / Mathf.Cos(x);
 	}
 
-	static float R_star(float x) {
-		const float w = 2.0f * Mathf.PI / 6.0f;
+	static float R_star(float x, int count, float power, float radiusMin) {
+		float w = 2.0f * Mathf.PI / (float)count;
 		x = (x % w) / w;
-		const float R1 = 0.33f;
+		float R1 = radiusMin;
 		const float R2 = 1.00f;
 		float q = 1.0f - 2.0f * Mathf.Abs(x - 0.5f);
-		q = q * q;
+		q = Mathf.Pow(q, power);
 		return (1.0f - q) * R1 + q * R2;
 	}
 
-	static float R_rose(float x) {
-		return Mathf.Cos((float)2.0f * x);
+	static float R_rose(float x, int petals) {
+		return Mathf.Cos((float)petals * x);
 	}
 
-	static float R_rose2(float x) {
-		return Mathf.Abs(Mathf.Cos((float)2.0f * x));
+	static float R_rose2(float x, int petals) {
+		return Mathf.Abs(Mathf.Cos((float)petals * x));
 	}
 
 	static float R_cardioid(float x) {
@@ -50,7 +50,12 @@ public class BlobShape : MonoBehaviour {
 
 	float R_total(float x) {
 		float[] radii = new float[] {
-			R_circle(x), R_square(x), R_star(x), R_rose(x), R_rose2(x), R_cardioid(x)
+			R_circle(x),
+			R_square(x),
+			R_star(x, Genes.swStarCount, Genes.swStarPower, Genes.swStarRadiusMin),
+			R_rose(x, Genes.swRosePetals),
+			R_rose2(x, Genes.swRoseAbsPetals),
+			R_cardioid(x)
 		};
 		float[] weights = new float[] {
 			 Genes.swCircle,  Genes.swSquare,  Genes.swStar,  Genes.swRose,  Genes.swRose2,  Genes.swCardioid
@@ -76,7 +81,7 @@ public class BlobShape : MonoBehaviour {
 		// vertices
 		Vector3[] vertices = new Vector3[N+1];
 		Color[] colors = new Color[N+1];
-		const float phiScl = 2.0f * Mathf.PI / (float)N;
+		float phiScl = 2.0f * Mathf.PI / (float)N;
 		for(int i=0; i<N; i++) {
 			float r = 0.0f;
 			float wTotal = 0.0f;
@@ -93,7 +98,7 @@ public class BlobShape : MonoBehaviour {
 			float r0 = R_total(phi0 - phiScl);
 			float r1 = R_total(phi0 + phiScl);
 			float deriv2 = (r0 + r1) - 2.0f*r;
-			float q = 0.2f + 0.8f * MoreMath.Clamp(-deriv2/0.5f, -0.2f, +0.2f);
+			float q = MoreMath.Clamp(0.05f - 2.0f*deriv2, 0.0f, 1.0f);
 			colors[i] = q * Genes.color;
 		};
 		vertices[N] = new Vector3(0,0,midh);

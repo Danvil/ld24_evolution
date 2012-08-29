@@ -20,7 +20,6 @@ public class BlobLineup : MonoBehaviour {
 					0);
 				blob.transform.rotation = Quaternion.AngleAxis(
 					Random.Range(0.0f, 360.0f), Vector3.forward);
-				blob.GetComponent<BlobGenotype>().Create();
 				objs.Add(blob);
 				offset.Add(Random.Range(0.0f,1.0f));
 			}

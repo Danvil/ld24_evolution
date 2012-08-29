@@ -49,11 +49,9 @@ public class BlobGenotype : MonoBehaviour {
 		}
 	}
 
-	const float cReprodutionIntervalBase = 80.0f;
-
 	public float ReprodutionFrequency {
 		get {
-			return 1.0f / cReprodutionIntervalBase
+			return 1.0f / genes.reproductionIntervalBase
 				* (1.0f + 1.0f*(genes.size - 0.5f)) // big needs more time
 				* (IsPlant ? 1.2f : 0.8f); // animals need more time
 		}
@@ -75,23 +73,22 @@ public class BlobGenotype : MonoBehaviour {
 		}
 	}
 
-	public void Create() {
-		genes = new Genes();
-		genes.Randomize();
+	public void Mutate(Genes other) {
+		Genes the_genes = other.Clone();
+		the_genes.Mutate();
+		Create(the_genes);
+	}
+
+	void Create(Genes genes) {
+		this.genes = genes;
 		GetComponent<BlobShape>().Genes = genes;
-		
+		GetComponent<BlobShape>().middleHeight = (IsPlant ? 1.0f : 0.5f);
 		if(IsPlant) {
 			Destroy(GetComponent<BlobMove>()); // plants to not move
 		}
-		GetComponent<BlobShape>().middleHeight = (IsPlant ? 1.0f : 0.5f);
-
-		Globals.Darwin.Register(genes);
-	}
-
-	public void Mutate(Genes other) {
-		genes = other.Clone();
-		genes.Mutate();
-		GetComponent<BlobShape>().Genes = genes;
+		if(Globals.Darwin) {
+			Globals.Darwin.Register(genes);
+		}
 	}
 
 	public void Kill(bool isNatural=true) {
@@ -137,8 +134,14 @@ public class BlobGenotype : MonoBehaviour {
 		x.GetComponent<BlobGenotype>().Mutate(genes);
 		// play sound
 		audio.PlayOneShot(audioReproduce);
-		// Darwin checks it
-		Globals.Darwin.Register(genes);
+	}
+
+	void Awake() {
+		if(genes == null) {
+			Genes the_genes = new Genes();
+			the_genes.Randomize();
+			Create(the_genes);
+		}
 	}
 
 	// Use this for initialization
