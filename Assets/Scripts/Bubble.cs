@@ -17,16 +17,6 @@ public class Bubble : MonoBehaviour {
 
 	GameObject particle;
 
-	public Color Color {
-		get {
-			return renderer.material.color;
-		}
-		set {
-			renderer.material.color = value;
-			particle.renderer.material.SetColor("_TintColor", value);
-		}
-	}
-
 	public float Alpha {
 		set {
 			Color col = particle.renderer.material.GetColor("_TintColor");
@@ -39,13 +29,11 @@ public class Bubble : MonoBehaviour {
 
 	public void SetPoisonBubble() {
 		IsFollowing = false;
-		Color = Color.red;
 		Health = -cHealthPerBubble;
 	}
 
 	public void SetHealthBubble() {
 		IsFollowing = true;
-		Color = Color.green;
 		Health = +cHealthPerBubble;
 	}
 
