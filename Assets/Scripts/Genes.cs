@@ -8,7 +8,7 @@ public class Genes
 
 	public const float cRestoreMin = -0.20f;
 	public const float cRestoreMax = +0.20f;
-	public const float cSizeMin = 0.20f;
+	public const float cSizeMin = 0.40f;
 	public const float cSizeMax = 0.90f;
 	public const float cBubbleIntervalMin = 10.0f;
 	public const float cBubbleIntervalMax = 200.0f;
