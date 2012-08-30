@@ -40,6 +40,8 @@ public class Genes
 	public Color color = Color.blue;
 
 	public int species = 0;
+
+	public bool isFounder = true;
 	
 	public Genes Clone() {
 		Genes g = new Genes();
@@ -62,6 +64,7 @@ public class Genes
 		g.reproductionIntervalBase = this.reproductionIntervalBase;
 		g.color = this.color;
 		g.species = this.species;
+		g.isFounder = this.isFounder;
 		return g;
 	}
 	
@@ -190,6 +193,11 @@ public class Genes
 		return scl*q*q;
 	}
 	
+	static float D(int x, int y, float scl=1.0f) {
+		float q = (float)(x - y);
+		return scl*q*q;
+	}
+	
 	public float Difference(Genes other) {
 		if(isPlant != other.isPlant) {
 			return 1.0f;
@@ -199,8 +207,13 @@ public class Genes
 			+ D(swCircle, other.swCircle, 1.0f)
 			+ D(swSquare, other.swSquare, 1.0f)
 			+ D(swStar, other.swStar, 1.0f)
+			+ D(swStarCount, other.swStarCount, 1.0f)
+			+ D(swStarPower, other.swStarPower, 1.0f)
+			+ D(swStarRadiusMin, other.swStarRadiusMin, 1.0f)
 			+ D(swRose, other.swRose, 1.0f)
+			+ D(swRosePetals, other.swRosePetals, 1.0f)
 			+ D(swRose2, other.swRose2, 1.0f)
+			+ D(swRoseAbsPetals, other.swRoseAbsPetals, 1.0f)
 			+ D(swCardioid, other.swCardioid, 1.0f)
 			+ D(playerFollowStrength, other.playerFollowStrength, 3.0f)
 			+ D(bubbleInterval, other.bubbleInterval, 3.0f)

@@ -25,15 +25,17 @@ public class Darwin : MonoBehaviour {
 				x.count ++;
 				x.maxCount ++;
 				genes.species = x.id;
+				genes.isFounder = false;
 				return;
 			}
 		}
-		// hurray!
+		// a new species, hurray!
 		Entry y = new Entry();
 		y.id = speciesId++;
 		y.genes = genes.Clone(); // can we have a clone plz?
 		y.count = 1;
 		genes.species = y.id;
+		genes.isFounder = true;
 		species.Add(y);
 	}
 	

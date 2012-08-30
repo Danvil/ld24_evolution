@@ -134,12 +134,21 @@ public class BlobGenotype : MonoBehaviour {
 			// can not place
 			return;
 		}
+		// create child
 		GameObject x = (GameObject)Instantiate(gameObject); // clone
 		x.transform.position = pos;
 		x.transform.rotation = Quaternion.AngleAxis(Random.Range(0.0f, 2.0f*Mathf.PI), Vector3.forward);
-		x.GetComponent<BlobGenotype>().Mutate(genes);
+		var genotype = x.GetComponent<BlobGenotype>();
+		genotype.Mutate(genes);
 		// play sound
 		audio.PlayOneShot(audioReproduce);
+		// show ring if new species
+		if(genotype.genes.isFounder) {
+			Globals.DecalManager.CreateNewSpecies(genotype.transform, 1.5f*genes.size, 0.0f);
+		}
+		else {
+			Globals.DecalManager.CreateNewIndividum(genotype.transform, 1.5f*genes.size, 0.0f);
+		}
 	}
 
 	// Use this for initialization
@@ -162,7 +171,7 @@ public class BlobGenotype : MonoBehaviour {
 			Globals.BubbleManager.CreateBubble(this.transform.position, genes.size, PlayerHealthRestoreTotal > 0);
 		}
 		if(IsPlant && MoreMath.CheckOccurence(WobbelFrequency)) {
-			Globals.DecalManager.Create(this.transform.position, 2.0f*genes.size, 
+			Globals.DecalManager.CreateEnv(this.transform, 2.0f*genes.size, 
 				HealthRestoreColor, 2.0f*genes.size,
 				genes.size);
 		}
