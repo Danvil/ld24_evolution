@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Genes
 {
-	public const float cMutationStrength = 0.50f;
+	public const float cMutationStrengthLow = 0.25f;
+	public const float cMutationStrengthHigh = 2.00f;
+	public const float cHighMutationProbability = 0.05f;
+
 	public const float cRestoreMin = -0.20f;
 	public const float cRestoreMax = +0.20f;
 	public const float cSizeMin = 0.20f;
@@ -71,7 +74,7 @@ public class Genes
 
 		if(isPlant) {
 			swCircle = Random.value;
-			swSquare = Random.value;
+			swSquare = 0;
 			swStar = Random.value;
 			swStarCount = Random.Range(2,6);
 			swStarPower = Random.Range(1.0f, 3.0f);
@@ -94,7 +97,7 @@ public class Genes
 			swStarPower = Random.Range(2.0f, 6.0f);
 			swStarRadiusMin = Random.Range(0.1f, 0.67f);
 			swRose = Random.value;
-			swRosePetals = Random.Range(1,8);
+			swRosePetals = Random.Range(1,6);
 			swRose2 = 0;
 			swRoseAbsPetals = 2;
 			swCardioid = Random.value;
@@ -119,21 +122,65 @@ public class Genes
 		return mutateVar(x, 0.0f, 1.0f, -a, +a);
 	}
 
+	/** Add +1/-1 with probability of p */
+	static int mutateIntOne(int x, int min, int max, float p) {
+		if(Random.value < p) {
+			int y = x;
+			if(Random.Range(0,2) == 0)
+				y --;
+			else
+				y ++;
+			return MoreMath.Clamp(min, max, y);
+		}
+		else
+			return x;
+	}
+
 	public void Mutate() {
-		size = mutateVar(size, cSizeMin, cSizeMax, 0.1f*cMutationStrength);
+		// decide if we have a low or a high mutation
+		float mutationStrength = (Random.value < cHighMutationProbability)
+				? cMutationStrengthHigh : cMutationStrengthLow;
 
-		swCircle = mutateVar(swCircle, 0.1f*cMutationStrength);
-		swSquare = mutateVar(swSquare, 0.1f*cMutationStrength);
-		swStar = mutateVar(swStar, 0.1f*cMutationStrength);
-		swRose = mutateVar(swRose, 0.1f*cMutationStrength);
-		swCardioid = mutateVar(swCardioid, 0.1f*cMutationStrength);
+		size = mutateVar(size, cSizeMin, cSizeMax, 0.1f*mutationStrength);
 
-		playerFollowStrength = mutateVar(playerFollowStrength, -1.0f, 1.0f, 0.1f*cMutationStrength);
+//			swCircle = mutateVar(swCircle, 0.1f*mutationStrength);
+//			swSquare = mutateVar(swSquare, 0.1f*mutationStrength);
+//			swStar = mutateVar(swStar, 0.1f*mutationStrength);
+//			swRose = mutateVar(swRose, 0.1f*mutationStrength);
+//			swCardioid = mutateVar(swCardioid, 0.1f*mutationStrength);
+		if(isPlant) {
+			swCircle = mutateVar(swCircle, 0.1f*mutationStrength);
+			swSquare = 0;
+			swStar = mutateVar(swStar, 0.1f*mutationStrength);
+			swStarCount = mutateIntOne(swStarCount, 2, 6, 0.1f*mutationStrength);
+			swStarPower = mutateVar(swStar, 1.0f, 3.0f, 0.2f*mutationStrength);
+			swStarRadiusMin = mutateVar(swStar, 0.1f, 0.67f, 0.1f*mutationStrength);
+			swRose = 0;
+			swRosePetals = 2;
+			swRose2 = mutateVar(swRose2, 0.1f*mutationStrength);
+			swRoseAbsPetals = mutateIntOne(swStarCount, 1, 6, 0.1f*mutationStrength);
+			swCardioid = 0;
+		}
+		else {
+			swCircle = 0;
+			swSquare = mutateVar(swSquare, 0.1f*mutationStrength);
+			swStar = mutateVar(swStar, 0.1f*mutationStrength);
+			swStarCount = mutateIntOne(swStarCount, 2, 8, 0.1f*mutationStrength);
+			swStarPower = mutateVar(swStar, 2.0f, 6.0f, 0.2f*mutationStrength);
+			swStarRadiusMin = mutateVar(swStar, 0.1f, 0.67f, 0.1f*mutationStrength);
+			swRose = mutateVar(swRose, 0.1f*mutationStrength);
+			swRosePetals = mutateIntOne(swStarCount, 1, 6, 0.1f*mutationStrength);
+			swRose2 = 0;
+			swRoseAbsPetals = 2;
+			swCardioid = mutateVar(swCardioid, 0.1f*mutationStrength);
+		}
 
-		playerHealthRestoreBase = mutateVar(playerHealthRestoreBase, cRestoreMin, cRestoreMax, 0.1f*cMutationStrength);
+		playerFollowStrength = mutateVar(playerFollowStrength, -1.0f, 1.0f, 0.1f*mutationStrength);
+
+		playerHealthRestoreBase = mutateVar(playerHealthRestoreBase, cRestoreMin, cRestoreMax, 0.1f*mutationStrength);
 
 		if(isPlant)
-			bubbleInterval = mutateVar(bubbleInterval, cBubbleIntervalMin, cBubbleIntervalMax, 1.0f*cMutationStrength);
+			bubbleInterval = mutateVar(bubbleInterval, cBubbleIntervalMin, cBubbleIntervalMax, 1.0f*mutationStrength);
 
 		UpdateColor();
 	}

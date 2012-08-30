@@ -21,6 +21,10 @@ public static class MoreMath
 		return Mathf.Max(min, Mathf.Min(max, x));
 	}
 
+	public static int Clamp(int x, int min, int max) {
+		return (min < x ? min : (max > x ? max : x));
+	}
+
 	/** Computes a an integer and 0 <= b < n, such that a*n + b = i and returns b. */
 	public static int ModPos(int i, int n) {
 		while(i < 0) i += n;
