@@ -72,7 +72,13 @@ public class BlobGenotype : MonoBehaviour {
 			return new Color(1.0f - q, q, 0.0f);
 		}
 	}
-
+	
+	public void CreateRandom() {
+		Genes the_genes = new Genes();
+		the_genes.Randomize();
+		Create(the_genes);
+	}
+	
 	public void Mutate(Genes other) {
 		Genes the_genes = other.Clone();
 		the_genes.Mutate();
@@ -134,14 +140,6 @@ public class BlobGenotype : MonoBehaviour {
 		x.GetComponent<BlobGenotype>().Mutate(genes);
 		// play sound
 		audio.PlayOneShot(audioReproduce);
-	}
-
-	void Awake() {
-		if(genes == null) {
-			Genes the_genes = new Genes();
-			the_genes.Randomize();
-			Create(the_genes);
-		}
 	}
 
 	// Use this for initialization

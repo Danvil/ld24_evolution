@@ -10,10 +10,11 @@ public class BlobShowReel : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		blob = (GameObject)Instantiate(blobPrefab);
+		blob.GetComponent<BlobGenotype>().CreateRandom();
 		blob.transform.position = Vector3.zero;
-		Destroy(blob.GetComponent<BlobMove>()); // hold still damnit
 		blob.GetComponent<BlobShape>().isUpdateMesh = true;
 		blob.GetComponent<BlobGenotype>().genes.reproductionIntervalBase = 1e9f;
+		Destroy(blob.GetComponent<BlobMove>()); // hold still damnit
 	}
 	
 	// Update is called once per frame

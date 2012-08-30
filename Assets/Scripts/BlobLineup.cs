@@ -14,6 +14,7 @@ public class BlobLineup : MonoBehaviour {
 		for(int y=-2; y<=2; y++) {
 			for(int x=-3; x<=3; x++) {
 				GameObject blob = (GameObject)Instantiate(blobPrefab);
+				blob.GetComponent<BlobGenotype>().CreateRandom();
 				blob.transform.position = new Vector3(
 					3*x + Random.Range(-1.0f,+1.0f),
 					3*y + Random.Range(-1.0f,+1.0f),
