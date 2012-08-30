@@ -4,8 +4,6 @@ using System.Linq;
 
 public class BlobShape : MonoBehaviour {
 
-	static public int N = 24; // LD24!
-
 	public bool isUpdateMesh = false;
 
 	public float middleHeight = 0.5f;
@@ -76,23 +74,30 @@ public class BlobShape : MonoBehaviour {
 		return result;
 	}
 
-	Mesh generateMesh(float scl, float rOffset, int smooth, float midh, bool genColor) {
+	Mesh generateMesh(float scl, float rOffset, int smooth, float midh, bool genColor, int N) {
 		Mesh mesh = new Mesh();
 		// vertices
 		Vector3[] vertices = new Vector3[N+1];
 		Color[] colors = new Color[N+1];
 		float phiScl = 2.0f * Mathf.PI / (float)N;
 		for(int i=0; i<N; i++) {
-			float r = 0.0f;
-			float wTotal = 0.0f;
-			for(int j=-smooth; j<=+smooth; j++) {
-				float phi = (float)(i+j) * phiScl;
-				float w = 1.0f / (1.0f + Mathf.Abs((float)j));
-				wTotal += w;
-				r += w * R_total(phi);
-			}
-			r /= wTotal;
 			float phi0 = ((float)i) * phiScl;
+			float r = 0.0f;
+			if(smooth > 0) {
+				// compute smoothed radius over neighbours
+				float wTotal = 0.0f;
+				for(int j=-smooth; j<=+smooth; j++) {
+					float phi = ((float)MoreMath.ModPos(i+j, N)) * phiScl;
+					float w = 1.0f / (1.0f + (float)(j*j));
+					wTotal += w;
+					r += w * R_total(phi);
+				}
+				r /= wTotal;
+			}
+			else {
+				// just take the current radius
+				r = R_total(phi0);
+			}
 			vertices[i] = (scl * r + rOffset) * new Vector3(Mathf.Cos(phi0), Mathf.Sin(phi0), 0);
 			// make color a bit darker for high second derivative in radius
 			float r0 = R_total(phi0 - phiScl);
@@ -127,11 +132,11 @@ public class BlobShape : MonoBehaviour {
 	}
 
 	Mesh generateDiffuseMesh() {
-		return generateMesh(1.0f, 0.0f, 0, -middleHeight, true);
+		return generateMesh(1.0f, 0.0f, 0, -middleHeight, true, 48);
 	}
 
 	Mesh generateShadowMesh() {
-		return generateMesh(1.1f, 0.25f, 2, 0.0f, false);
+		return generateMesh(1.1f, 0.25f, 2, 0.0f, false, 12);
 	}
 
 	public void CreateMesh() {

@@ -7,10 +7,6 @@ public class BlobShowReel : MonoBehaviour {
 
 	GameObject blob;
 
-	void Awake() {
-		BlobShape.N = 120;
-	}
-
 	// Use this for initialization
 	void Start () {
 		blob = (GameObject)Instantiate(blobPrefab);

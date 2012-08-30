@@ -45,8 +45,13 @@ public class Genes
 		g.swCircle = this.swCircle;
 		g.swSquare = this.swSquare;
 		g.swStar = this.swStar;
+		g.swStarCount = this.swStarCount;
+		g.swStarPower = this.swStarPower;
+		g.swStarRadiusMin = this.swStarRadiusMin;
 		g.swRose = this.swRose;
+		g.swRosePetals = this.swRosePetals;
 		g.swRose2 = this.swRose2;
+		g.swRoseAbsPetals = this.swRoseAbsPetals;
 		g.swCardioid = this.swCardioid;
 		g.playerFollowStrength = this.playerFollowStrength;
 		g.bubbleInterval = this.bubbleInterval;
@@ -68,8 +73,13 @@ public class Genes
 			swCircle = Random.value;
 			swSquare = Random.value;
 			swStar = Random.value;
+			swStarCount = Random.Range(2,6);
+			swStarPower = Random.Range(1.0f, 3.0f);
+			swStarRadiusMin = Random.Range(0.1f, 0.67f);
 			swRose = 0;
+			swRosePetals = 2;
 			swRose2 = Random.value;
+			swRoseAbsPetals = Random.Range(1,6);
 			swCardioid = 0;
 
 			playerFollowStrength = 0.0f;
@@ -80,8 +90,13 @@ public class Genes
 			swCircle = 0;
 			swSquare = Random.value;
 			swStar = Random.value;
+			swStarCount = Random.Range(2,8);
+			swStarPower = Random.Range(2.0f, 6.0f);
+			swStarRadiusMin = Random.Range(0.1f, 0.67f);
 			swRose = Random.value;
+			swRosePetals = Random.Range(1,8);
 			swRose2 = 0;
+			swRoseAbsPetals = 2;
 			swCardioid = Random.value;
 
 			playerFollowStrength = Random.Range(-1.0f, +1.0f);
