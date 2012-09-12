@@ -100,10 +100,11 @@ public class BlobShape : MonoBehaviour {
 			}
 			vertices[i] = (scl * r + rOffset) * new Vector3(Mathf.Cos(phi0), Mathf.Sin(phi0), 0);
 			// make color a bit darker for high second derivative in radius
-			float r0 = R_total(phi0 - phiScl);
-			float r1 = R_total(phi0 + phiScl);
+			float r0 = R_total(((float)MoreMath.ModPos(i-1, N)) * phiScl);
+			float r1 = R_total(((float)MoreMath.ModPos(i+1, N)) * phiScl);
 			float deriv2 = (r0 + r1) - 2.0f*r;
-			float q = MoreMath.Clamp(0.05f - 2.0f*deriv2, 0.0f, 1.0f);
+			float qpre = MoreMath.Clamp(-10.0f*deriv2, -1.0f, +0.2f);
+			float q = MoreMath.Clamp(0.1f + 0.1f*qpre, 0.0f, 1.0f);
 			colors[i] = q * Genes.color;
 		};
 		vertices[N] = new Vector3(0,0,midh);
